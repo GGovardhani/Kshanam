@@ -1,0 +1,195 @@
+{% extends 'core/base.html' %}
+{% block title %}Health — Kshanam{% endblock %}
+
+{% block content %}
+<div style="max-width:760px; margin:0 auto; padding:2rem 1.5rem;">
+
+  <!-- Header -->
+  <div style="text-align:center; margin-bottom:2.5rem;">
+    <p style="font-size:0.75rem; letter-spacing:0.25em; text-transform:uppercase; color:#c9a84c; margin-bottom:0.5rem;">✦ Health</p>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-size:2.8rem; font-weight:300; color:#f5f0e8; margin-bottom:0.4rem;">
+      Your Health Profile
+    </h1>
+    <p style="color:#8a9bb0; font-size:0.9rem;">Track your workouts and get personalized AI health guidance.</p>
+  </div>
+
+  <!-- Health Profile Form -->
+  <form method="post">
+    {% csrf_token %}
+    <div style="background:#1a2e45; border:1px solid rgba(201,168,76,0.15); border-radius:16px; padding:2rem; margin-bottom:1.5rem;">
+      <p style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#c9a84c; margin-bottom:1.25rem;">✦ Health Details</p>
+
+      <div style="margin-bottom:1.25rem;">
+        <label style="font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">Activity Level</label>
+        {{ form.activity_level }}
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+        <div>
+          <label style="font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">Average Sleep Hours</label>
+          {{ form.average_sleep_hours }}
+        </div>
+        <div>
+          <label style="font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">Workout Days Per Week</label>
+          {{ form.workout_days_per_week }}
+        </div>
+      </div>
+
+      <div style="margin-top:1.5rem;">
+        <button type="submit" name="save_health" style="
+          padding:0.75rem 2rem;
+          background:#c9a84c;
+          color:#0d1b2a;
+          border:none;
+          border-radius:10px;
+          font-size:0.9rem;
+          font-weight:500;
+          cursor:pointer;
+        ">Save & Get AI Suggestion →</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Today's Workout Log -->
+  <form method="post">
+    {% csrf_token %}
+    <div style="background:#1a2e45; border:1px solid rgba(201,168,76,0.15); border-radius:16px; padding:2rem; margin-bottom:1.5rem;">
+      <p style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#c9a84c; margin-bottom:0.4rem;">✦ Today's Workout</p>
+      <p style="font-size:0.85rem; color:#8a9bb0; margin-bottom:1.5rem;">
+        Log what you did today so AI can give better suggestions.
+      </p>
+
+      {% if today_workout %}
+      <div style="
+        background:rgba(76,175,130,0.08);
+        border:1px solid rgba(76,175,130,0.2);
+        border-radius:10px;
+        padding:0.75rem 1rem;
+        margin-bottom:1.25rem;
+        font-size:0.85rem;
+        color:#6fcf97;
+      ">
+        ✓ Today you logged: {{ today_workout.get_workout_type_display }} — {{ today_workout.duration_minutes }} mins ({{ today_workout.get_intensity_display }})
+      </div>
+      {% endif %}
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem;">
+        <div>
+          <label style="font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">Workout Type</label>
+          {{ workout_form.workout_type }}
+        </div>
+        <div>
+          <label style="font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">Duration (minutes)</label>
+          {{ workout_form.duration_minutes }}
+        </div>
+        <div>
+          <label style="font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">Intensity</label>
+          {{ workout_form.intensity }}
+        </div>
+        <div>
+          <label style="font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">Details (optional)</label>
+          {{ workout_form.notes }}
+        </div>
+      </div>
+
+      <button type="submit" name="log_workout" style="
+        padding:0.75rem 2rem;
+        background:rgba(76,175,130,0.15);
+        color:#6fcf97;
+        border:1px solid rgba(76,175,130,0.3);
+        border-radius:10px;
+        font-size:0.9rem;
+        font-weight:500;
+        cursor:pointer;
+      ">Log Workout ✓</button>
+    </div>
+  </form>
+
+  <!-- Recent Workouts -->
+  {% if recent_workouts %}
+  <div style="background:#1a2e45; border:1px solid rgba(201,168,76,0.12); border-radius:16px; padding:2rem; margin-bottom:1.5rem;">
+    <p style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#c9a84c; margin-bottom:1.25rem;">✦ Recent Workouts</p>
+    <div style="display:flex; flex-direction:column; gap:0.65rem;">
+      {% for workout in recent_workouts %}
+      <div style="
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        padding:0.75rem 1rem;
+        background:rgba(255,255,255,0.02);
+        border:1px solid rgba(255,255,255,0.05);
+        border-radius:10px;
+      ">
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <span style="font-size:1.2rem;">
+            {% if workout.workout_type == 'strength' %}🏋️
+            {% elif workout.workout_type == 'cardio' %}🏃
+            {% elif workout.workout_type == 'yoga' %}🧘
+            {% elif workout.workout_type == 'stretching' %}🤸
+            {% elif workout.workout_type == 'walking' %}🚶
+            {% elif workout.workout_type == 'cycling' %}🚴
+            {% elif workout.workout_type == 'swimming' %}🏊
+            {% elif workout.workout_type == 'hiit' %}⚡
+            {% elif workout.workout_type == 'sports' %}⚽
+            {% else %}💪{% endif %}
+          </span>
+          <div>
+            <p style="font-size:0.9rem; color:#f5f0e8; margin-bottom:0.1rem;">{{ workout.get_workout_type_display }}</p>
+            {% if workout.notes %}
+              <p style="font-size:0.78rem; color:#8a9bb0;">{{ workout.notes }}</p>
+            {% endif %}
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <p style="font-size:0.85rem; color:#c9a84c;">{{ workout.duration_minutes }} mins</p>
+          <p style="font-size:0.75rem; color:#8a9bb0;">{{ workout.date|date:"M j" }} · {{ workout.get_intensity_display }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- AI Health Suggestion -->
+  {% if health.ai_health_suggestion %}
+  <div style="
+    background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02));
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 16px;
+    padding: 1.75rem;
+    position:relative;
+    overflow:hidden;
+  ">
+    <div style="position:absolute; top:-1rem; left:1rem; font-family:'Cormorant Garamond',serif; font-size:7rem; color:rgba(201,168,76,0.06); line-height:1; pointer-events:none;">"</div>
+    <p style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#c9a84c; margin-bottom:0.75rem;">✦ Kshanam Health Guidance</p>
+    <p style="font-size:1rem; line-height:1.8; color:#f5f0e8;">
+      {{ health.ai_health_suggestion }}
+    </p>
+    {% if health.last_suggestion_date %}
+      <p style="font-size:0.75rem; color:#8a9bb0; margin-top:1rem;">
+        Last updated: {{ health.last_suggestion_date|date:"F j, Y" }}
+      </p>
+    {% endif %}
+  </div>
+  {% else %}
+  <div style="background:#1a2e45; border:1px solid rgba(201,168,76,0.12); border-radius:16px; padding:2rem; text-align:center;">
+    <p style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:#8a9bb0; font-style:italic;">
+      Save your health profile to receive personalized AI guidance.
+    </p>
+  </div>
+  {% endif %}
+
+  <div style="margin-top:1.5rem;">
+    <a href="{% url 'dashboard' %}" style="
+      display:inline-block;
+      padding:0.7rem 1.5rem;
+      background:transparent;
+      color:#c9a84c;
+      border:1px solid rgba(201,168,76,0.4);
+      border-radius:10px;
+      font-size:0.88rem;
+      text-decoration:none;
+    ">← Dashboard</a>
+  </div>
+
+</div>
+{% endblock %}

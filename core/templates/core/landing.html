@@ -1,0 +1,82 @@
+{% extends 'core/base.html' %}
+{% block title %}Kshanam — Your future is still being written.{% endblock %}
+
+{% block content %}
+<div style="
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 60%);
+">
+
+  <p style="font-size:0.8rem; letter-spacing:0.3em; text-transform:uppercase; color:#c9a84c; margin-bottom:1.5rem;">
+    ✦ AI-Powered Life Reflection System
+  </p>
+
+  <h1 style="
+    font-family:'Cormorant Garamond',serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    font-weight: 300;
+    color: #f5f0e8;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+  ">
+    <span style="color:#c9a84c;">K</span>shanam
+  </h1>
+
+  <p style="
+    font-family:'Cormorant Garamond',serif;
+    font-size: 1.2rem;
+    color: #8a9bb0;
+    max-width: 480px;
+    margin: 0 auto 1rem;
+    font-style: italic;
+    line-height: 1.7;
+  ">
+    "18,000 opportunities remain."<br/>
+    Every day is a chance to build the life you intend to live.
+  </p>
+
+  <p style="font-size:0.95rem; color:#c9a84c; margin-bottom:2.5rem; letter-spacing:0.05em;">
+    Awareness &nbsp;→&nbsp; Action &nbsp;→&nbsp; Reflection &nbsp;→&nbsp; Growth
+  </p>
+
+  <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+    <a href="{% url 'register' %}" style="
+      display: inline-flex;
+      align-items: center;
+      padding: 0.75rem 2rem;
+      background: #c9a84c;
+      color: #0d1b2a;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      transition: all 0.3s;
+    ">Begin Your Journey →</a>
+
+    <a href="{% url 'login' %}" style="
+      display: inline-flex;
+      align-items: center;
+      padding: 0.75rem 2rem;
+      background: transparent;
+      color: #c9a84c;
+      border: 1px solid rgba(201,168,76,0.4);
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      transition: all 0.3s;
+    ">Sign In</a>
+  </div>
+
+</div>
+{% endblock %}

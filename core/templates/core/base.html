@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Kshanam{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="{% static 'css/kshanam.css' %}"/>
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+{% if user.is_authenticated %}
+<nav class="kshanam-nav">
+  <a href="{% url 'dashboard' %}" class="nav-brand">
+    Kshanam
+    <span>Your future is still being written.</span>
+  </a>
+  <div class="nav-links">
+    <a href="{% url 'dashboard' %}">Dashboard</a>
+    <a href="{% url 'daily_entry' %}" class="btn-nav-entry">Today's Entry</a>
+    <a href="{% url 'weekly_report' %}">Weekly</a>
+    <a href="{% url 'monthly_report' %}">Monthly</a>
+    <a href="{% url 'health' %}">Health</a>
+    <a href="{% url 'journal_history' %}">Journal</a>
+    <a href="{% url 'insights_history' %}">AI Insights</a>
+    <a href="{% url 'profile' %}">Profile</a>
+    <a href="{% url 'logout' %}" style="color:var(--muted)">Logout</a>
+  </div>
+</nav>
+{% endif %}
+
+{% if messages %}
+<div style="max-width:1100px; margin: 1rem auto; padding: 0 1.5rem;">
+  {% for message in messages %}
+    <div class="alert-k {% if message.tags == 'error' %}alert-k-error{% elif message.tags == 'success' %}alert-k-success{% else %}alert-k-info{% endif %}">
+      {% if message.tags == 'success' %}✓{% elif message.tags == 'error' %}✕{% else %}→{% endif %}
+      {{ message }}
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% block content %}{% endblock %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/kshanam.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

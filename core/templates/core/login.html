@@ -1,0 +1,83 @@
+{% extends 'core/base.html' %}
+{% block title %}Sign In — Kshanam{% endblock %}
+
+{% block content %}
+<div style="
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+">
+  <div style="
+    background: #1a2e45;
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 16px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 32px rgba(13,27,42,0.4);
+  ">
+
+    <p style="font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:#c9a84c; margin-bottom:0.5rem;">✦ Welcome Back</p>
+
+    <h2 style="font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:300; color:#f5f0e8; margin-bottom:0.3rem;">
+      Sign In
+    </h2>
+    <p style="font-size:0.85rem; color:#8a9bb0; margin-bottom:2rem;">
+      Your future is still being written.
+    </p>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div style="margin-bottom:1rem;">
+        <label style="font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">
+          Username
+        </label>
+        {{ form.username }}
+      </div>
+
+      <div style="margin-bottom:1.5rem;">
+        <label style="font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">
+          Password
+        </label>
+        {{ form.password }}
+      </div>
+
+      {% if form.errors %}
+        <div style="
+          padding: 0.75rem 1rem;
+          background: rgba(224,112,112,0.1);
+          border: 1px solid rgba(224,112,112,0.25);
+          border-radius: 8px;
+          color: #e07070;
+          font-size: 0.85rem;
+          margin-bottom: 1rem;
+        ">✕ Invalid username or password.</div>
+      {% endif %}
+
+      <button type="submit" style="
+        width: 100%;
+        padding: 0.75rem;
+        background: #c9a84c;
+        color: #0d1b2a;
+        border: none;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        cursor: pointer;
+        transition: all 0.3s;
+      ">Sign In →</button>
+    </form>
+
+    <div style="height:1px; background:rgba(255,255,255,0.06); margin:1.5rem 0;"></div>
+
+    <p style="text-align:center; font-size:0.85rem; color:#8a9bb0;">
+      New here? <a href="{% url 'register' %}" style="color:#c9a84c;">Create account</a>
+    </p>
+
+  </div>
+</div>
+{% endblock %}

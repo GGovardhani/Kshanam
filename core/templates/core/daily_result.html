@@ -1,0 +1,197 @@
+{% extends 'core/base.html' %}
+{% block title %}AI Reflection — Kshanam{% endblock %}
+
+{% block content %}
+<div style="
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+">
+
+    <!-- Header -->
+    <div style="
+        margin-bottom: 2rem;
+        padding-bottom: 1.2rem;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+    ">
+        <p style="
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #c9a84c;
+            margin-bottom: 0.5rem;
+        ">
+            ✦ AI Reflection
+        </p>
+
+        <h1 style="
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: #f5f0e8;
+            margin-bottom: 0.4rem;
+        ">
+            Kshanam Reflection
+        </h1>
+
+        <p style="
+            color: #8a9bb0;
+            font-size: 0.95rem;
+        ">
+            {{ today|date:"l, F j, Y" }}
+            &nbsp;·&nbsp;
+            Here is what Kshanam sees in your day
+        </p>
+    </div>
+
+    {% if insight %}
+
+    <!-- Main Reflection Card -->
+    <div style="
+        background: linear-gradient(
+            135deg,
+            rgba(201,168,76,0.08),
+            rgba(201,168,76,0.02)
+        );
+        border: 1px solid rgba(201,168,76,0.18);
+        border-radius: 18px;
+        padding: 2.2rem;
+        margin-bottom: 1.8rem;
+        position: relative;
+        overflow: hidden;
+    ">
+
+        <div style="
+            position: absolute;
+            top: -1rem;
+            left: 1rem;
+            font-size: 7rem;
+            color: rgba(201,168,76,0.05);
+            font-family: 'Cormorant Garamond', serif;
+            pointer-events: none;
+        ">
+            "
+        </div>
+
+        <p style="
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #c9a84c;
+            margin-bottom: 1rem;
+        ">
+            ✦ Your Daily Reflection
+        </p>
+
+        <p style="
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: #f5f0e8;
+            font-style: italic;
+            position: relative;
+            z-index: 2;
+        ">
+            {{ insight.content }}
+        </p>
+
+        {% if insight.motivational_quote %}
+        <div style="
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(201,168,76,0.12);
+        ">
+            <p style="
+                font-size: 0.75rem;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: #c9a84c;
+                margin-bottom: 0.8rem;
+            ">
+                ✦ For You Today
+            </p>
+
+            <p style="
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 1.3rem;
+                color: #e8c97a;
+                font-style: italic;
+                line-height: 1.8;
+            ">
+                {{ insight.motivational_quote }}
+            </p>
+        </div>
+        {% endif %}
+
+    </div>
+
+    {% else %}
+
+    <!-- Empty State -->
+    <div style="
+        background: #1a2e45;
+        border: 1px solid rgba(201,168,76,0.12);
+        border-radius: 16px;
+        padding: 2.5rem;
+        text-align: center;
+        margin-bottom: 2rem;
+    ">
+        <p style="
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: #f5f0e8;
+            font-style: italic;
+            line-height: 1.8;
+        ">
+            “Every day you show up is a step forward.<br>
+            Your future is still being written.”
+        </p>
+    </div>
+
+    {% endif %}
+
+    <!-- Footer Quote -->
+    <p style="
+        text-align: center;
+        color: #8a9bb0;
+        font-size: 0.9rem;
+        margin-bottom: 2rem;
+        font-style: italic;
+    ">
+        — Kshanam, your life reflection companion
+    </p>
+
+    <!-- Action Buttons -->
+    <div class="fade-up-4" style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+        <a href="{% url 'dashboard' %}" style="
+            padding:0.75rem 1.75rem;
+            background:#c9a84c;
+            color:#0d1b2a;
+            border-radius:10px;
+            font-size:0.88rem;
+            font-weight:500;
+            text-decoration:none;
+        ">Back to Dashboard</a>
+        <a href="{% url 'insights_history' %}" style="
+            padding:0.75rem 1.75rem;
+            background:transparent;
+            color:#c9a84c;
+            border:1px solid rgba(201,168,76,0.4);
+            border-radius:10px;
+            font-size:0.88rem;
+            text-decoration:none;
+        ">All AI Insights</a>
+        <a href="{% url 'weekly_report' %}" style="
+            padding:0.75rem 1.75rem;
+            background:rgba(255,255,255,0.04);
+            color:#f5f0e8;
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:10px;
+            font-size:0.88rem;
+            text-decoration:none;
+        ">Weekly Report</a>
+        </div>
+        
+
+</div>
+{% endblock %}

@@ -1,0 +1,277 @@
+```html id="m4n82p"
+{% extends 'core/base.html' %}
+{% block title %}Monthly Report — Kshanam{% endblock %}
+
+{% block content %}
+<div style="
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+">
+
+    <!-- Header -->
+    <div style="
+        margin-bottom: 2rem;
+        padding-bottom: 1.2rem;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+    ">
+        <p style="
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #c9a84c;
+            margin-bottom: 0.5rem;
+        ">
+            ✦ Monthly Report
+        </p>
+
+        <h1 style="
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: #f5f0e8;
+            margin-bottom: 0.4rem;
+        ">
+            Your Monthly Reflection
+        </h1>
+
+        <p style="
+            color: #8a9bb0;
+            font-size: 0.95rem;
+        ">
+            {{ month }}, {{ year }}
+            &nbsp;·&nbsp;
+            A summary of how you spent your time this month
+        </p>
+    </div>
+
+    {% if report %}
+
+    <div style="
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1.8rem;
+    ">
+
+        <!-- LEFT COLUMN -->
+        <div>
+
+            <!-- Meaningful Hours Card -->
+            <div style="
+                background: linear-gradient(
+                    135deg,
+                    rgba(201,168,76,0.10),
+                    rgba(201,168,76,0.03)
+                );
+                border: 1px solid rgba(201,168,76,0.20);
+                border-radius: 16px;
+                padding: 2rem;
+                margin-bottom: 1.5rem;
+                text-align: center;
+            ">
+                <p style="
+                    font-size: 0.75rem;
+                    letter-spacing: 0.15em;
+                    text-transform: uppercase;
+                    color: #c9a84c;
+                    margin-bottom: 1rem;
+                ">
+                    ✦ Meaningful Hours This Month
+                </p>
+
+                <p style="
+                    font-family: 'Cormorant Garamond', serif;
+                    font-size: 4.8rem;
+                    font-weight: 300;
+                    color: #f5f0e8;
+                    line-height: 1;
+                    margin-bottom: 0.5rem;
+                ">
+                    {{ report.total_meaningful_hours|floatformat:1 }}
+                </p>
+
+                <p style="
+                    color: #8a9bb0;
+                    font-size: 0.95rem;
+                    margin-bottom: 1.5rem;
+                ">
+                    hours invested in learning and physical activity
+                </p>
+
+                <p style="
+                    font-family: 'Cormorant Garamond', serif;
+                    font-size: 1.1rem;
+                    color: #e8c97a;
+                    font-style: italic;
+                    line-height: 1.8;
+                ">
+                    “This month you spent
+                    {{ report.total_meaningful_hours|floatformat:0 }}
+                    hours improving your future self.”
+                </p>
+            </div>
+
+            <!-- AI Reflection -->
+            {% if report.ai_summary %}
+            <div style="
+                background: #1a2e45;
+                border: 1px solid rgba(201,168,76,0.12);
+                border-radius: 16px;
+                padding: 2rem;
+                position: relative;
+                overflow: hidden;
+            ">
+                <div style="
+                    position: absolute;
+                    top: -1rem;
+                    left: 1rem;
+                    font-size: 7rem;
+                    color: rgba(201,168,76,0.05);
+                    font-family: 'Cormorant Garamond', serif;
+                    pointer-events: none;
+                ">
+                    "
+                </div>
+
+                <p style="
+                    font-size: 0.75rem;
+                    letter-spacing: 0.15em;
+                    text-transform: uppercase;
+                    color: #c9a84c;
+                    margin-bottom: 1rem;
+                    position: relative;
+                    z-index: 2;
+                ">
+                    ✦ Kshanam Monthly Reflection
+                </p>
+
+                <p style="
+                    font-family: 'Cormorant Garamond', serif;
+                    font-size: 1.05rem;
+                    line-height: 1.9;
+                    color: #f5f0e8;
+                    font-style: italic;
+                    position: relative;
+                    z-index: 2;
+                ">
+                    {{ report.ai_summary }}
+                </p>
+            </div>
+            {% endif %}
+
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div>
+
+            <!-- Progress Card -->
+            <div style="
+                background: #1a2e45;
+                border: 1px solid rgba(201,168,76,0.12);
+                border-radius: 16px;
+                padding: 2rem;
+                margin-bottom: 1.5rem;
+            ">
+                <p style="
+                    font-size: 0.75rem;
+                    letter-spacing: 0.15em;
+                    text-transform: uppercase;
+                    color: #c9a84c;
+                    margin-bottom: 1rem;
+                ">
+                    ✦ Growth Reminder
+                </p>
+
+                <p style="
+                    color: #f5f0e8;
+                    line-height: 1.8;
+                    font-size: 0.95rem;
+                ">
+                    Small consistent actions become life-changing outcomes.
+                    Every hour invested today builds your tomorrow.
+                </p>
+            </div>
+
+            <!-- Navigation -->
+            <div style="
+                background: #1a2e45;
+                border: 1px solid rgba(201,168,76,0.12);
+                border-radius: 16px;
+                padding: 1.5rem;
+            ">
+                <a href="{% url 'dashboard' %}" style="
+                    display: block;
+                    padding: 0.75rem 1rem;
+                    background: rgba(255,255,255,0.04);
+                    border: 1px solid rgba(255,255,255,0.06);
+                    border-radius: 10px;
+                    text-align: center;
+                    color: #f5f0e8;
+                    text-decoration: none;
+                    margin-bottom: 0.8rem;
+                ">
+                    ← Dashboard
+                </a>
+
+                <a href="{% url 'weekly_report' %}" style="
+                    display: block;
+                    padding: 0.75rem 1rem;
+                    background: #c9a84c;
+                    border-radius: 10px;
+                    text-align: center;
+                    color: #0d1b2a;
+                    text-decoration: none;
+                    font-weight: 500;
+                ">
+                    Weekly Report →
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    {% else %}
+
+    <!-- Empty State -->
+    <div style="
+        background: #1a2e45;
+        border: 1px solid rgba(201,168,76,0.12);
+        border-radius: 16px;
+        padding: 3rem;
+        text-align: center;
+    ">
+        <h2 style="
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 300;
+            color: #f5f0e8;
+            margin-bottom: 1rem;
+        ">
+            No monthly data yet
+        </h2>
+
+        <p style="
+            color: #8a9bb0;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        ">
+            Log daily entries throughout the month to generate your report.
+        </p>
+
+        <a href="{% url 'daily_entry' %}" style="
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: #c9a84c;
+            color: #0d1b2a;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 500;
+        ">
+            Log Today →
+        </a>
+    </div>
+
+    {% endif %}
+</div>
+{% endblock %}
+```

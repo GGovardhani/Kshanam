@@ -1,0 +1,331 @@
+{% extends 'core/base.html' %}
+{% block title %}Dashboard — Kshanam{% endblock %}
+
+{% block content %}
+<div style="max-width:1100px; margin:0 auto; padding:2rem 1.5rem;">
+
+  <!-- Header -->
+  <div style="margin-bottom:2rem; padding-bottom:1.25rem; border-bottom:1px solid rgba(255,255,255,0.06);">
+    <p style="font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase; color:#c9a84c; margin-bottom:0.4rem;">✦ Dashboard</p>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-size:2.8rem; font-weight:300; color:#f5f0e8; margin-bottom:0.3rem;">
+      Good day, {{ request.user.first_name|default:request.user.username }}.
+    </h1>
+    <p style="color:#8a9bb0; font-size:0.9rem;">
+      {{ today|date:"l, F j, Y" }} &nbsp;·&nbsp;
+      <span style="color:#c9a84c;">{{ life_setup.days_remaining }} opportunities remain</span>
+    </p>
+  </div>
+
+  <!-- Today Status Row -->
+  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; margin-bottom:1.75rem;">
+
+    <div style="background:#1a2e45; border:1px solid rgba(201,168,76,0.12); border-radius:14px; padding:1.25rem 1.5rem; display:flex; align-items:center; justify-content:space-between;">
+      <div>
+        <p style="font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem;">Daily Log</p>
+        {% if today_log %}
+          <span style="display:inline-flex; align-items:center; gap:0.35rem; padding:0.25rem 0.75rem; background:rgba(76,175,130,0.12); border:1px solid rgba(76,175,130,0.2); border-radius:99px; font-size:0.75rem; color:#6fcf97;">✓ Done</span>
+        {% else %}
+          <span style="display:inline-flex; align-items:center; gap:0.35rem; padding:0.25rem 0.75rem; background:rgba(138,155,176,0.1); border:1px solid rgba(138,155,176,0.15); border-radius:99px; font-size:0.75rem; color:#8a9bb0;">○ Pending</span>
+        {% endif %}
+      </div>
+      <span style="font-size:1.5rem;">📋</span>
+    </div>
+
+    <div style="background:#1a2e45; border:1px solid rgba(201,168,76,0.12); border-radius:14px; padding:1.25rem 1.5rem; display:flex; align-items:center; justify-content:space-between;">
+      <div>
+        <p style="font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem;">Journal</p>
+        {% if today_journal %}
+          <span style="display:inline-flex; align-items:center; gap:0.35rem; padding:0.25rem 0.75rem; background:rgba(76,175,130,0.12); border:1px solid rgba(76,175,130,0.2); border-radius:99px; font-size:0.75rem; color:#6fcf97;">✓ Written</span>
+        {% else %}
+          <span style="display:inline-flex; align-items:center; gap:0.35rem; padding:0.25rem 0.75rem; background:rgba(138,155,176,0.1); border:1px solid rgba(138,155,176,0.15); border-radius:99px; font-size:0.75rem; color:#8a9bb0;">○ Pending</span>
+        {% endif %}
+      </div>
+      <span style="font-size:1.5rem;">📓</span>
+    </div>
+
+    <div style="background:#1a2e45; border:1px solid rgba(201,168,76,0.12); border-radius:14px; padding:1.25rem 1.5rem; display:flex; align-items:center; justify-content:space-between;">
+      <div>
+        <p style="font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem;">Actions</p>
+        {% if today_actions %}
+          <span style="display:inline-flex; align-items:center; gap:0.35rem; padding:0.25rem 0.75rem; background:rgba(76,175,130,0.12); border:1px solid rgba(76,175,130,0.2); border-radius:99px; font-size:0.75rem; color:#6fcf97;">✓ {{ today_actions.total_actions_completed }}/7</span>
+        {% else %}
+          <span style="display:inline-flex; align-items:center; gap:0.35rem; padding:0.25rem 0.75rem; background:rgba(138,155,176,0.1); border:1px solid rgba(138,155,176,0.15); border-radius:99px; font-size:0.75rem; color:#8a9bb0;">○ Pending</span>
+        {% endif %}
+      </div>
+      <span style="font-size:1.5rem;">✅</span>
+    </div>
+
+  </div>
+
+  <!-- Main Grid -->
+  <div style="display:grid; grid-template-columns:2fr 1fr; gap:1.75rem;">
+
+    <!-- LEFT COLUMN -->
+    <div>
+
+      <!-- Lifetime Card -->
+      <div style="
+        background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.03));
+        border: 1px solid rgba(201,168,76,0.25);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+      ">
+        <p style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#c9a84c; margin-bottom:1.25rem;">✦ Lifetime Overview</p>
+
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.5rem;">
+          <div style="text-align:center;">
+            <p style="font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:300; color:#c9a84c; line-height:1;">{{ life_setup.years_remaining }}</p>
+            <p style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.1em; color:#8a9bb0; margin-top:0.3rem;">Years</p>
+          </div>
+          <div style="text-align:center;">
+            <p style="font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:300; color:#c9a84c; line-height:1;">{{ life_setup.months_remaining }}</p>
+            <p style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.1em; color:#8a9bb0; margin-top:0.3rem;">Months</p>
+          </div>
+          <div style="text-align:center;">
+            <p style="font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:300; color:#c9a84c; line-height:1;">{{ life_setup.weeks_remaining }}</p>
+            <p style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.1em; color:#8a9bb0; margin-top:0.3rem;">Weeks</p>
+          </div>
+          <div style="text-align:center;">
+            <p style="font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:300; color:#c9a84c; line-height:1;">{{ life_setup.days_remaining }}</p>
+            <p style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.1em; color:#8a9bb0; margin-top:0.3rem;">Days</p>
+          </div>
+        </div>
+
+        <!-- Life Used Bar -->
+        <div style="margin-bottom:0.75rem;">
+          <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#8a9bb0; margin-bottom:0.5rem;">
+            <span>Life used — {{ life_setup.life_used_percentage }}%</span>
+            <span>Remaining — {{ life_setup.life_remaining_percentage }}%</span>
+          </div>
+          <div style="height:8px; background:rgba(255,255,255,0.06); border-radius:99px; overflow:hidden;">
+            <div style="height:100%; width:{{ life_setup.life_used_percentage }}%; background:linear-gradient(90deg,#c9a84c,#e8c97a); border-radius:99px;"></div>
+          </div>
+        </div>
+
+        <!-- Remaining Bar -->
+        <div>
+          <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#8a9bb0; margin-bottom:0.5rem;">
+            <span style="color:#4caf82;">Remaining opportunities</span>
+          </div>
+          <div style="height:8px; background:rgba(255,255,255,0.06); border-radius:99px; overflow:hidden;">
+            <div style="height:100%; width:{{ life_setup.life_remaining_percentage }}%; background:linear-gradient(90deg,#4caf82,#6fcf97); border-radius:99px;"></div>
+          </div>
+        </div>
+
+        <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.1rem; color:#e8c97a; margin-top:1.25rem; text-align:center;">
+          "{{ life_setup.days_remaining }} opportunities remain."
+        </p>
+      </div>
+
+      <!-- Mood Chart -->
+      <div style="background:#1a2e45; border:1px solid rgba(201,168,76,0.12); border-radius:16px; padding:1.75rem; margin-bottom:1.5rem;">
+        <p style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#c9a84c; margin-bottom:1.25rem;">✦ Last 7 Days — Mood & Energy</p>
+        {% if mood_data != "[]" %}
+          <canvas id="moodChart" height="120"></canvas>
+        {% else %}
+          <p style="color:#8a9bb0; font-size:0.9rem; text-align:center; padding:2rem 0; font-family:'Cormorant Garamond',serif; font-style:italic;">
+            Start logging daily entries to see your trends here.
+          </p>
+        {% endif %}
+      </div>
+
+      <!-- AI Insight -->
+      {% if latest_insight %}
+      <div style="
+        background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02));
+        border: 1px solid rgba(201,168,76,0.2);
+        border-radius: 16px;
+        padding: 1.75rem;
+        position:relative;
+        overflow:hidden;
+      ">
+        <div style="position:absolute; top:-1rem; left:1rem; font-family:'Cormorant Garamond',serif; font-size:7rem; color:rgba(201,168,76,0.06); line-height:1; pointer-events:none;">"</div>
+        <p style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#c9a84c; margin-bottom:0.75rem;">✦ Latest AI Reflection</p>
+        <p style="font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-weight:300; line-height:1.8; color:#f5f0e8; font-style:italic;">
+          {{ latest_insight.content }}
+        </p>
+        {% if latest_insight.motivational_quote %}
+          <p style="font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:300; color:#e8c97a; font-style:italic; margin-top:1rem; padding-top:1rem; border-top:1px solid rgba(201,168,76,0.15);">
+            {{ latest_insight.motivational_quote }}
+          </p>
+        {% endif %}
+      </div>
+      {% endif %}
+
+    </div>
+        <!-- Future Self Message -->
+      {% if future_insight %}
+      <div style="
+        background: linear-gradient(135deg, rgba(76,175,130,0.08), rgba(76,175,130,0.02));
+        border: 1px solid rgba(76,175,130,0.2);
+        border-radius: 16px;
+        padding: 1.75rem;
+        margin-top: 1.5rem;
+        position:relative;
+        overflow:hidden;
+      ">
+        <p style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#6fcf97; margin-bottom:0.75rem;">✦ Message From Your Future Self</p>
+        <p style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:300; line-height:1.8; color:#f5f0e8; font-style:italic;">
+          {{ future_insight.content }}
+        </p>
+      </div>
+      {% endif %}
+    
+
+    <!-- RIGHT COLUMN -->
+    <div>
+
+      <!-- CTA Card -->
+      {% if not today_log %}
+      <div style="
+        background:#1a2e45;
+        border:1px solid rgba(201,168,76,0.2);
+        border-radius:16px;
+        padding:2rem;
+        text-align:center;
+        margin-bottom:1.5rem;
+      ">
+        <p style="font-family:'Cormorant Garamond',serif; font-size:1.15rem; color:#f5f0e8; margin-bottom:1.25rem; line-height:1.6;">
+          You haven't logged today yet.
+        </p>
+        <a href="{% url 'daily_entry' %}" style="
+          display:inline-block;
+          padding:0.75rem 1.5rem;
+          background:#c9a84c;
+          color:#0d1b2a;
+          border-radius:10px;
+          font-size:0.88rem;
+          font-weight:500;
+          letter-spacing:0.06em;
+          text-decoration:none;
+        ">Start Today's Entry →</a>
+      </div>
+      {% else %}
+      <div style="
+        background:#1a2e45;
+        border:1px solid rgba(76,175,130,0.2);
+        border-radius:16px;
+        padding:2rem;
+        text-align:center;
+        margin-bottom:1.5rem;
+      ">
+        <p style="font-size:0.8rem; color:#6fcf97; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.5rem;">✓ Today Complete</p>
+        <p style="font-family:'Cormorant Garamond',serif; font-size:1rem; color:#8a9bb0; font-style:italic;">
+          Well done. Come back tomorrow.
+        </p>
+      </div>
+      {% endif %}
+
+      <!-- Streaks -->
+      <div style="background:#1a2e45; border:1px solid rgba(201,168,76,0.12); border-radius:16px; padding:1.5rem; margin-bottom:1.5rem;">
+        <p style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#c9a84c; margin-bottom:1.25rem;">✦ Streaks</p>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0.75rem;">
+
+          <div style="text-align:center; padding:0.85rem 0.5rem; background:{% if streaks.study_streak > 0 %}rgba(201,168,76,0.06){% else %}rgba(255,255,255,0.02){% endif %}; border:1px solid {% if streaks.study_streak > 0 %}rgba(201,168,76,0.25){% else %}rgba(255,255,255,0.05){% endif %}; border-radius:10px;">
+            <div style="font-size:1.3rem; margin-bottom:0.2rem;">📚</div>
+            <div style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; color:#c9a84c; line-height:1;">{{ streaks.study_streak }}</div>
+            <div style="font-size:0.62rem; text-transform:uppercase; letter-spacing:0.07em; color:#8a9bb0; margin-top:0.2rem;">Study</div>
+          </div>
+
+          <div style="text-align:center; padding:0.85rem 0.5rem; background:{% if streaks.workout_streak > 0 %}rgba(201,168,76,0.06){% else %}rgba(255,255,255,0.02){% endif %}; border:1px solid {% if streaks.workout_streak > 0 %}rgba(201,168,76,0.25){% else %}rgba(255,255,255,0.05){% endif %}; border-radius:10px;">
+            <div style="font-size:1.3rem; margin-bottom:0.2rem;">💪</div>
+            <div style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; color:#c9a84c; line-height:1;">{{ streaks.workout_streak }}</div>
+            <div style="font-size:0.62rem; text-transform:uppercase; letter-spacing:0.07em; color:#8a9bb0; margin-top:0.2rem;">Workout</div>
+          </div>
+
+          <div style="text-align:center; padding:0.85rem 0.5rem; background:{% if streaks.no_procrastination_streak > 0 %}rgba(201,168,76,0.06){% else %}rgba(255,255,255,0.02){% endif %}; border:1px solid {% if streaks.no_procrastination_streak > 0 %}rgba(201,168,76,0.25){% else %}rgba(255,255,255,0.05){% endif %}; border-radius:10px;">
+            <div style="font-size:1.3rem; margin-bottom:0.2rem;">🎯</div>
+            <div style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; color:#c9a84c; line-height:1;">{{ streaks.no_procrastination_streak }}</div>
+            <div style="font-size:0.62rem; text-transform:uppercase; letter-spacing:0.07em; color:#8a9bb0; margin-top:0.2rem;">No Delay</div>
+          </div>
+
+          <div style="text-align:center; padding:0.85rem 0.5rem; background:{% if streaks.good_deed_streak > 0 %}rgba(201,168,76,0.06){% else %}rgba(255,255,255,0.02){% endif %}; border:1px solid {% if streaks.good_deed_streak > 0 %}rgba(201,168,76,0.25){% else %}rgba(255,255,255,0.05){% endif %}; border-radius:10px;">
+            <div style="font-size:1.3rem; margin-bottom:0.2rem;">🤝</div>
+            <div style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; color:#c9a84c; line-height:1;">{{ streaks.good_deed_streak }}</div>
+            <div style="font-size:0.62rem; text-transform:uppercase; letter-spacing:0.07em; color:#8a9bb0; margin-top:0.2rem;">Good Deed</div>
+          </div>
+
+          <div style="text-align:center; padding:0.85rem 0.5rem; background:{% if streaks.discipline_streak > 0 %}rgba(201,168,76,0.06){% else %}rgba(255,255,255,0.02){% endif %}; border:1px solid {% if streaks.discipline_streak > 0 %}rgba(201,168,76,0.25){% else %}rgba(255,255,255,0.05){% endif %}; border-radius:10px;">
+            <div style="font-size:1.3rem; margin-bottom:0.2rem;">🔥</div>
+            <div style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; color:#c9a84c; line-height:1;">{{ streaks.discipline_streak }}</div>
+            <div style="font-size:0.62rem; text-transform:uppercase; letter-spacing:0.07em; color:#8a9bb0; margin-top:0.2rem;">Discipline</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Priorities -->
+      <div style="background:#1a2e45; border:1px solid rgba(201,168,76,0.12); border-radius:16px; padding:1.5rem; margin-bottom:1.5rem;">
+        <p style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#c9a84c; margin-bottom:1rem;">✦ Your Priorities</p>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1.25rem;">
+          {% for p in life_setup.priorities %}
+            <span style="display:inline-block; padding:0.25rem 0.7rem; background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.2); border-radius:99px; font-size:0.72rem; color:#c9a84c; letter-spacing:0.07em; text-transform:uppercase;">
+              {{ p|title }}
+            </span>
+          {% endfor %}
+        </div>
+        <div style="height:1px; background:rgba(255,255,255,0.06); margin-bottom:1.25rem;"></div>
+        <div style="display:flex; flex-direction:column; gap:0.5rem;">
+          <a href="{% url 'weekly_report' %}" style="display:block; padding:0.55rem 1rem; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07); border-radius:8px; font-size:0.82rem; color:#f5f0e8; text-decoration:none; text-align:center;">Weekly Report</a>
+          <a href="{% url 'monthly_report' %}" style="display:block; padding:0.55rem 1rem; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07); border-radius:8px; font-size:0.82rem; color:#f5f0e8; text-decoration:none; text-align:center;">Monthly Report</a>
+          <a href="{% url 'health' %}" style="display:block; padding:0.55rem 1rem; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07); border-radius:8px; font-size:0.82rem; color:#f5f0e8; text-decoration:none; text-align:center;">Health Guidance</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const moodRaw = {{ mood_data|safe }};
+if (moodRaw.length > 0) {
+  const labels = moodRaw.map(d => {
+    const dt = new Date(d.date);
+    return dt.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric' });
+  });
+  new Chart(document.getElementById('moodChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Mood',
+          data: moodRaw.map(d => d.mood),
+          borderColor: '#c9a84c',
+          backgroundColor: 'rgba(201,168,76,0.08)',
+          borderWidth: 2,
+          pointBackgroundColor: '#c9a84c',
+          pointRadius: 4,
+          tension: 0.4,
+          fill: true,
+        },
+        {
+          label: 'Energy',
+          data: moodRaw.map(d => d.energy),
+          borderColor: '#4caf82',
+          backgroundColor: 'rgba(76,175,130,0.06)',
+          borderWidth: 2,
+          pointBackgroundColor: '#4caf82',
+          pointRadius: 4,
+          tension: 0.4,
+          fill: true,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#8a9bb0', font: { family: 'DM Sans', size: 11 } } }
+      },
+      scales: {
+        x: { ticks: { color: '#8a9bb0', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+        y: { min: 0, max: 10, ticks: { color: '#8a9bb0', stepSize: 2 }, grid: { color: 'rgba(255,255,255,0.04)' } }
+      }
+    }
+  });
+}
+</script>
+{% endblock %}

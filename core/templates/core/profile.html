@@ -1,0 +1,325 @@
+{% extends 'core/base.html' %}
+{% block title %}Profile — Kshanam{% endblock %}
+
+{% block content %}
+<div style="max-width:1100px; margin:0 auto; padding:2rem 1.5rem;">
+
+  <!-- Header -->
+  <div style="
+    margin-bottom:2rem;
+    padding-bottom:1.25rem;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  ">
+    <p style="
+      font-size:0.75rem;
+      letter-spacing:0.2em;
+      text-transform:uppercase;
+      color:#c9a84c;
+      margin-bottom:0.4rem;
+    ">
+      ✦ Profile
+    </p>
+
+    <h1 style="
+      font-family:'Cormorant Garamond', serif;
+      font-size:2.8rem;
+      font-weight:300;
+      color:#f5f0e8;
+      margin-bottom:0.3rem;
+    ">
+      {{ request.user.get_full_name|default:request.user.username }}
+    </h1>
+
+    <p style="
+      color:#8a9bb0;
+      font-size:0.95rem;
+    ">
+      Member since {{ request.user.date_joined|date:"F Y" }}
+    </p>
+  </div>
+
+  <div style="
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:1.75rem;
+  ">
+
+    <!-- LEFT COLUMN -->
+    <div>
+
+      <!-- Journey Summary -->
+      <div style="
+        background:#1a2e45;
+        border:1px solid rgba(201,168,76,0.12);
+        border-radius:16px;
+        padding:1.75rem;
+        margin-bottom:1.5rem;
+      ">
+        <p style="
+          font-size:0.75rem;
+          letter-spacing:0.15em;
+          text-transform:uppercase;
+          color:#c9a84c;
+          margin-bottom:1rem;
+        ">
+          ✦ Your Journey So Far
+        </p>
+
+        <div style="
+          display:grid;
+          grid-template-columns:repeat(2,1fr);
+          gap:1rem;
+        ">
+          <div>
+            <p style="font-size:2rem; color:#c9a84c; font-family:'Cormorant Garamond', serif; margin:0;">
+              {{ total_logs }}
+            </p>
+            <p style="color:#8a9bb0; font-size:0.85rem;">Days Logged</p>
+          </div>
+
+          <div>
+            <p style="font-size:2rem; color:#c9a84c; font-family:'Cormorant Garamond', serif; margin:0;">
+              {{ total_journals }}
+            </p>
+            <p style="color:#8a9bb0; font-size:0.85rem;">Journal Entries</p>
+          </div>
+
+          <div>
+            <p style="font-size:2rem; color:#c9a84c; font-family:'Cormorant Garamond', serif; margin:0;">
+              {{ streaks.study_streak_best }}
+            </p>
+            <p style="color:#8a9bb0; font-size:0.85rem;">Best Study Streak</p>
+          </div>
+
+          <div>
+            <p style="font-size:2rem; color:#c9a84c; font-family:'Cormorant Garamond', serif; margin:0;">
+              {{ streaks.discipline_streak_best }}
+            </p>
+            <p style="color:#8a9bb0; font-size:0.85rem;">Best Discipline Streak</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIFE SETUP CARD -->
+      {% if life_setup %}
+      <div style="
+        background:linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02));
+        border:1px solid rgba(201,168,76,0.2);
+        border-radius:16px;
+        padding:1.75rem;
+        margin-bottom:1.5rem;
+      ">
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          margin-bottom:1rem;
+          gap:1rem;
+          flex-wrap:wrap;
+        ">
+          <p style="
+            font-size:0.75rem;
+            letter-spacing:0.15em;
+            text-transform:uppercase;
+            color:#c9a84c;
+            margin:0;
+          ">
+            ✦ Life Setup
+          </p>
+
+          <a href="{% url 'life_setup' %}" style="
+            display:inline-block;
+            padding:0.65rem 1.1rem;
+            background:rgba(255,255,255,0.04);
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:10px;
+            font-size:0.82rem;
+            color:#f5f0e8;
+            text-decoration:none;
+          ">
+            Edit Life Setup →
+          </a>
+        </div>
+
+        <p style="color:#f5f0e8; margin-bottom:0.6rem;">
+          Current Age:
+          <span style="color:#c9a84c;">{{ life_setup.current_age }}</span>
+        </p>
+
+        <p style="color:#f5f0e8; margin-bottom:0.6rem;">
+          Expected Lifespan:
+          <span style="color:#c9a84c;">{{ life_setup.expected_lifespan }}</span>
+        </p>
+
+        <p style="color:#f5f0e8; margin-bottom:0.6rem;">
+          Years Remaining:
+          <span style="color:#c9a84c;">{{ life_setup.years_remaining }}</span>
+        </p>
+
+        <p style="color:#f5f0e8; margin-bottom:1rem;">
+          Life Used:
+          <span style="color:#c9a84c;">{{ life_setup.life_used_percentage }}%</span>
+        </p>
+
+        <p style="
+          font-size:0.75rem;
+          letter-spacing:0.1em;
+          text-transform:uppercase;
+          color:#8a9bb0;
+          margin-bottom:0.8rem;
+        ">
+          Your Priorities
+        </p>
+
+        <div style="
+          display:flex;
+          flex-wrap:wrap;
+          gap:0.5rem;
+        ">
+          {% for p in life_setup.priorities %}
+            <span style="
+              padding:0.35rem 0.8rem;
+              background:rgba(201,168,76,0.08);
+              border:1px solid rgba(201,168,76,0.2);
+              border-radius:999px;
+              font-size:0.75rem;
+              color:#c9a84c;
+            ">
+              {{ p|title }}
+            </span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- EDIT PROFILE CARD -->
+      <div style="
+        background:#1a2e45;
+        border:1px solid rgba(201,168,76,0.12);
+        border-radius:16px;
+        padding:1.75rem;
+      ">
+        <p style="
+          font-size:0.75rem;
+          letter-spacing:0.15em;
+          text-transform:uppercase;
+          color:#c9a84c;
+          margin-bottom:1rem;
+        ">
+          ✦ Edit Profile
+        </p>
+
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          {% if profile.profile_picture %}
+          <div style="margin-bottom:1.5rem; text-align:center;">
+            <img
+              src="{{ profile.profile_picture.url }}"
+              alt="Profile Picture"
+              style="
+                width:120px;
+                height:120px;
+                border-radius:50%;
+                object-fit:cover;
+                border:3px solid rgba(201,168,76,0.4);
+                box-shadow:0 8px 24px rgba(0,0,0,0.25);
+              "
+            >
+
+            <p style="
+              margin-top:0.8rem;
+              font-size:0.85rem;
+              color:#8a9bb0;
+            ">
+              Current Profile Picture
+            </p>
+          </div>
+          {% endif %}
+
+          <div style="margin-bottom:1rem;">
+            <label style="display:block; color:#8a9bb0; margin-bottom:0.4rem;">
+              Profile Picture
+            </label>
+            {{ form.profile_picture }}
+          </div>
+
+          <div style="margin-bottom:1.2rem;">
+            <label style="display:block; color:#8a9bb0; margin-bottom:0.4rem;">
+              Bio
+            </label>
+            {{ form.bio }}
+          </div>
+
+          <button type="submit" style="
+            padding:0.8rem 1.5rem;
+            background:#c9a84c;
+            color:#0d1b2a;
+            border:none;
+            border-radius:10px;
+            font-size:0.9rem;
+            font-weight:500;
+            cursor:pointer;
+          ">
+            Save Profile
+          </button>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div>
+
+      <!-- Best Streaks -->
+      <div style="
+        background:#1a2e45;
+        border:1px solid rgba(201,168,76,0.12);
+        border-radius:16px;
+        padding:1.5rem;
+      ">
+        <p style="
+          font-size:0.75rem;
+          letter-spacing:0.15em;
+          text-transform:uppercase;
+          color:#c9a84c;
+          margin-bottom:1rem;
+        ">
+          ✦ Best Streaks Ever
+        </p>
+
+        <div style="display:flex; flex-direction:column; gap:0.8rem;">
+
+          <p style="color:#f5f0e8;">
+            📚 Study —
+            <span style="color:#c9a84c;">{{ streaks.study_streak_best }} days</span>
+          </p>
+
+          <p style="color:#f5f0e8;">
+            💪 Workout —
+            <span style="color:#c9a84c;">{{ streaks.workout_streak_best }} days</span>
+          </p>
+
+          <p style="color:#f5f0e8;">
+            🎯 No Procrastination —
+            <span style="color:#c9a84c;">{{ streaks.no_procrastination_best }} days</span>
+          </p>
+
+          <p style="color:#f5f0e8;">
+            🤝 Good Deed —
+            <span style="color:#c9a84c;">{{ streaks.good_deed_streak_best }} days</span>
+          </p>
+
+          <p style="color:#f5f0e8;">
+            🔥 Discipline —
+            <span style="color:#c9a84c;">{{ streaks.discipline_streak_best }} days</span>
+          </p>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,148 @@
+{% extends 'core/base.html' %}
+{% block title %}Life Setup — Kshanam{% endblock %}
+
+{% block content %}
+<div style="
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+">
+  <div style="width: 100%; max-width: 680px;">
+
+    <!-- Header -->
+    <div style="text-align:center; margin-bottom:2.5rem;">
+      <p style="font-size:0.75rem; letter-spacing:0.25em; text-transform:uppercase; color:#c9a84c; margin-bottom:0.75rem;">✦ One Time Setup</p>
+      <h1 style="font-family:'Cormorant Garamond',serif; font-size:3rem; font-weight:300; color:#f5f0e8; margin-bottom:0.5rem;">
+        Your Life Profile
+      </h1>
+      <p style="color:#8a9bb0; font-size:0.95rem;">
+        Tell Kshanam about yourself. This shapes everything.
+      </p>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <!-- Timeline Card -->
+      <div style="
+        background: #1a2e45;
+        border: 1px solid rgba(201,168,76,0.15);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 8px 32px rgba(13,27,42,0.3);
+      ">
+        <p style="font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; color:#c9a84c; margin-bottom:1.25rem;">✦ Your Timeline</p>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+          <div>
+            <label style="font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">
+              Current Age
+            </label>
+            {{ form.current_age }}
+            {% if form.current_age.errors %}
+              <p style="color:#e07070; font-size:0.8rem; margin-top:0.3rem;">{{ form.current_age.errors.0 }}</p>
+            {% endif %}
+          </div>
+          <div>
+            <label style="font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">
+              Expected Lifespan
+            </label>
+            {{ form.expected_lifespan }}
+            {% if form.expected_lifespan.errors %}
+              <p style="color:#e07070; font-size:0.8rem; margin-top:0.3rem;">{{ form.expected_lifespan.errors.0 }}</p>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if form.non_field_errors %}
+          <div style="
+            margin-top:1rem;
+            padding:0.75rem 1rem;
+            background:rgba(224,112,112,0.1);
+            border:1px solid rgba(224,112,112,0.25);
+            border-radius:8px;
+            color:#e07070;
+            font-size:0.85rem;
+          ">{{ form.non_field_errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <!-- Priorities Card -->
+      <div style="
+        background: #1a2e45;
+        border: 1px solid rgba(201,168,76,0.15);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 8px 32px rgba(13,27,42,0.3);
+      ">
+        <p style="font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; color:#c9a84c; margin-bottom:0.5rem;">✦ Life Priorities</p>
+        <p style="font-size:0.85rem; color:#8a9bb0; margin-bottom:1.25rem;">
+          What matters most to you? Select all that apply.
+        </p>
+
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0.75rem;">
+          {% for checkbox in form.priorities %}
+            <label style="
+              display:flex;
+              align-items:center;
+              gap:0.65rem;
+              padding:0.75rem 1rem;
+              background:rgba(255,255,255,0.03);
+              border:1px solid rgba(255,255,255,0.07);
+              border-radius:10px;
+              cursor:pointer;
+              transition:all 0.2s;
+              font-size:0.88rem;
+              color:#f5f0e8;
+            "
+            onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'; this.style.background='rgba(201,168,76,0.07)'"
+            onmouseout="this.style.borderColor='rgba(255,255,255,0.07)'; this.style.background='rgba(255,255,255,0.03)'">
+              {{ checkbox.tag }}
+              {{ checkbox.choice_label }}
+            </label>
+          {% endfor %}
+        </div>
+
+        {% if form.priorities.errors %}
+          <p style="color:#e07070; font-size:0.8rem; margin-top:0.75rem;">{{ form.priorities.errors.0 }}</p>
+        {% endif %}
+      </div>
+
+      <!-- Motivational note -->
+      <div style="
+        text-align:center;
+        padding:1.25rem;
+        margin-bottom:1.5rem;
+        border:1px solid rgba(201,168,76,0.1);
+        border-radius:12px;
+        background:rgba(201,168,76,0.04);
+      ">
+        <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.1rem; color:#c9a84c;">
+          "Your future is still being written."
+        </p>
+      </div>
+
+      <!-- Submit -->
+      <div style="text-align:center;">
+        <button type="submit" style="
+          padding: 0.85rem 2.5rem;
+          background: #c9a84c;
+          color: #0d1b2a;
+          border: none;
+          border-radius: 10px;
+          font-size: 0.95rem;
+          font-weight: 500;
+          letter-spacing: 0.06em;
+          cursor: pointer;
+          transition: all 0.3s;
+        ">Save & Go to Dashboard →</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}

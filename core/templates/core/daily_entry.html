@@ -1,0 +1,198 @@
+{% extends 'core/base.html' %}
+{% block title %}Today's Entry — Kshanam{% endblock %}
+
+{% block content %}
+<div style="max-width:760px; margin:0 auto; padding:2rem 1.5rem;">
+
+  <!-- Header -->
+  <div style="text-align:center; margin-bottom:2.5rem;">
+    <p style="font-size:0.75rem; letter-spacing:0.25em; text-transform:uppercase; color:#c9a84c; margin-bottom:0.5rem;">✦ Daily Entry</p>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-size:2.8rem; font-weight:300; color:#f5f0e8; margin-bottom:0.4rem;">
+      {{ today|date:"l, F j" }}
+    </h1>
+    <p style="color:#8a9bb0; font-size:0.9rem;">Take 5 minutes. Log your day. Let AI reflect it back to you.</p>
+  </div>
+
+  {% if already_submitted %}
+  <div style="
+    background:rgba(76,175,130,0.08);
+    border:1px solid rgba(76,175,130,0.2);
+    border-radius:12px;
+    padding:1rem 1.5rem;
+    margin-bottom:1.5rem;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  ">
+    <div>
+      <p style="color:#6fcf97; font-size:0.85rem; margin-bottom:0.2rem;">✓ You already submitted today's entry.</p>
+      <p style="color:#8a9bb0; font-size:0.8rem;">You can edit and resubmit below if needed.</p>
+    </div>
+    <a href="{% url 'daily_result' %}" style="
+      padding:0.5rem 1rem;
+      background:rgba(76,175,130,0.15);
+      border:1px solid rgba(76,175,130,0.3);
+      border-radius:8px;
+      color:#6fcf97;
+      font-size:0.82rem;
+      text-decoration:none;
+    ">View AI Reflection →</a>
+  </div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+
+    <!-- Section 1: Quick Check -->
+    <div style="background:#1a2e45; border:1px solid rgba(201,168,76,0.15); border-radius:16px; padding:2rem; margin-bottom:1.5rem;">
+      <p style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#c9a84c; margin-bottom:0.4rem;">✦ Quick Check</p>
+      <p style="font-size:0.85rem; color:#8a9bb0; margin-bottom:1.5rem;">Your daily health and habit snapshot.</p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
+
+        <div>
+          <label style="font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">Wake Up Time</label>
+          {{ log_form.wake_up_time }}
+        </div>
+
+        <div>
+          <label style="font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">Sleep Hours</label>
+          {{ log_form.sleep_hours }}
+        </div>
+
+        <div>
+          <label style="font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">Study Hours</label>
+          {{ log_form.study_hours }}
+        </div>
+
+        <div>
+          <label style="font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">Physical Activity (minutes)</label>
+          {{ log_form.physical_activity_minutes }}
+        </div>
+
+        <div>
+          <label style="font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">Screen Time (hours)</label>
+          {{ log_form.screen_time_hours }}
+        </div>
+
+        <div>
+          <label style="font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">Water Intake (liters)</label>
+          {{ log_form.water_intake_liters }}
+        </div>
+
+        <div>
+          <label style="font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">Mood (1 = Very Low, 10 = Excellent)</label>
+          {{ log_form.mood }}
+        </div>
+
+        <div>
+          <label style="font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">Energy Level (1 = Very Low, 10 = Excellent)</label>
+          {{ log_form.energy_level }}
+        </div>
+
+      </div>
+
+      {% if log_form.errors %}
+        <div style="margin-top:1rem; padding:0.75rem 1rem; background:rgba(224,112,112,0.1); border:1px solid rgba(224,112,112,0.25); border-radius:8px; color:#e07070; font-size:0.82rem;">
+          Please fill in all quick check fields.
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Section 2: Meaningful Actions -->
+    <div style="background:#1a2e45; border:1px solid rgba(201,168,76,0.15); border-radius:16px; padding:2rem; margin-bottom:1.5rem;">
+      <p style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#c9a84c; margin-bottom:0.4rem;">✦ Meaningful Actions</p>
+      <p style="font-size:0.85rem; color:#8a9bb0; margin-bottom:1.5rem;">Check everything that applies to your day.</p>
+
+      <div style="display:flex; flex-direction:column; gap:0.65rem;">
+        <label style="display:flex; align-items:center; gap:0.85rem; padding:0.85rem 1.1rem; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:10px; cursor:pointer;"
+          onmouseover="this.style.borderColor='rgba(201,168,76,0.3)'; this.style.background='rgba(201,168,76,0.05)'"
+          onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'; this.style.background='rgba(255,255,255,0.02)'">
+          {{ actions_form.learned_something }}
+          <span style="font-size:0.9rem; color:#f5f0e8;">I learned something new today</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:0.85rem; padding:0.85rem 1.1rem; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:10px; cursor:pointer;"
+          onmouseover="this.style.borderColor='rgba(201,168,76,0.3)'; this.style.background='rgba(201,168,76,0.05)'"
+          onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'; this.style.background='rgba(255,255,255,0.02)'">
+          {{ actions_form.exercised }}
+          <span style="font-size:0.9rem; color:#f5f0e8;">I exercised today</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:0.85rem; padding:0.85rem 1.1rem; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:10px; cursor:pointer;"
+          onmouseover="this.style.borderColor='rgba(201,168,76,0.3)'; this.style.background='rgba(201,168,76,0.05)'"
+          onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'; this.style.background='rgba(255,255,255,0.02)'">
+          {{ actions_form.helped_someone }}
+          <span style="font-size:0.9rem; color:#f5f0e8;">I helped someone today</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:0.85rem; padding:0.85rem 1.1rem; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:10px; cursor:pointer;"
+          onmouseover="this.style.borderColor='rgba(201,168,76,0.3)'; this.style.background='rgba(201,168,76,0.05)'"
+          onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'; this.style.background='rgba(255,255,255,0.02)'">
+          {{ actions_form.quality_time_with_loved_ones }}
+          <span style="font-size:0.9rem; color:#f5f0e8;">I spent quality time with family or friends</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:0.85rem; padding:0.85rem 1.1rem; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:10px; cursor:pointer;"
+          onmouseover="this.style.borderColor='rgba(201,168,76,0.3)'; this.style.background='rgba(201,168,76,0.05)'"
+          onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'; this.style.background='rgba(255,255,255,0.02)'">
+          {{ actions_form.avoided_bad_habit }}
+          <span style="font-size:0.9rem; color:#f5f0e8;">I avoided a bad habit today</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:0.85rem; padding:0.85rem 1.1rem; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:10px; cursor:pointer;"
+          onmouseover="this.style.borderColor='rgba(201,168,76,0.3)'; this.style.background='rgba(201,168,76,0.05)'"
+          onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'; this.style.background='rgba(255,255,255,0.02)'">
+          {{ actions_form.worked_toward_future }}
+          <span style="font-size:0.9rem; color:#f5f0e8;">I worked toward my future goals</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:0.85rem; padding:0.85rem 1.1rem; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:10px; cursor:pointer;"
+          onmouseover="this.style.borderColor='rgba(201,168,76,0.3)'; this.style.background='rgba(201,168,76,0.05)'"
+          onmouseout="this.style.borderColor='rgba(255,255,255,0.06)'; this.style.background='rgba(255,255,255,0.02)'">
+          {{ actions_form.took_care_of_mental_health }}
+          <span style="font-size:0.9rem; color:#f5f0e8;">I took care of my mental health</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Section 3: Reflection Journal -->
+    <div style="background:#1a2e45; border:1px solid rgba(201,168,76,0.15); border-radius:16px; padding:2rem; margin-bottom:1.5rem;">
+      <p style="font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#c9a84c; margin-bottom:0.4rem;">✦ Daily Reflection Journal</p>
+      <p style="font-size:0.85rem; color:#8a9bb0; margin-bottom:1.5rem;">
+        Write freely about your day. This becomes the input for your AI reflection.
+      </p>
+      <label style="font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#8a9bb0; margin-bottom:0.4rem; display:block;">Your Reflection</label>
+      {{ journal_form.entry }}
+      {% if journal_form.errors %}
+        <div style="margin-top:0.75rem; color:#e07070; font-size:0.82rem;">Please write something in the journal.</div>
+      {% endif %}
+    </div>
+
+    <!-- Submit -->
+    <div style="text-align:center; margin-bottom:1rem;">
+      <button type="submit" style="
+        padding:0.85rem 2.5rem;
+        background:#c9a84c;
+        color:#0d1b2a;
+        border:none;
+        border-radius:10px;
+        font-size:0.95rem;
+        font-weight:500;
+        letter-spacing:0.06em;
+        cursor:pointer;
+        margin-right:0.75rem;
+      ">Submit & Get AI Reflection →</button>
+      <a href="{% url 'dashboard' %}" style="
+        display:inline-block;
+        padding:0.85rem 1.5rem;
+        background:rgba(255,255,255,0.04);
+        border:1px solid rgba(255,255,255,0.08);
+        border-radius:10px;
+        font-size:0.88rem;
+        color:#f5f0e8;
+        text-decoration:none;
+      ">Cancel</a>
+    </div>
+
+    <p style="text-align:center; font-size:0.8rem; color:#8a9bb0; font-style:italic;">
+      After submission, Kshanam AI will reflect on your day and share a personal message.
+    </p>
+
+  </form>
+</div>
+{% endblock %}
