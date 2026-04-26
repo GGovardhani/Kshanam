@@ -25,6 +25,9 @@ DEBUG = os.environ.get("DEBUG", "True") == "True"
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 
 ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://kshanam-production.up.railway.app"
+]
 
 
 # Installed apps
