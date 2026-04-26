@@ -2,8 +2,6 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "python manage.py migrate && gunicorn kshanam.wsgi --bind 0.0.0.0:$PORT --log-file -"
-healthcheckPath = "/login/"
-healthcheckTimeout = 300
+startCommand = "python manage.py migrate && gunicorn kshanam.wsgi --bind 0.0.0.0:$PORT --workers 2 --log-file -"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
