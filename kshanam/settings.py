@@ -78,8 +78,21 @@ WSGI_APPLICATION = "kshanam.wsgi.application"
 # Database (Railway + Supabase PostgreSQL)
 DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL:
+    # parse manually to avoid dj_database_url issues
+    import urllib.parse
+    url = urllib.parse.urlparse(DATABASE_URL)
     DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': url.path[1:],
+            'USER': url.username,
+            'PASSWORD': urllib.parse.unquote(url.password) if url.password else '',
+            'HOST': url.hostname,
+            'PORT': url.port or 5432,
+            'OPTIONS': {
+                'sslmode': 'require',
+            },
+        }
     }
 else:
     DATABASES = {
@@ -92,8 +105,6 @@ else:
             'PORT': os.environ.get('DATABASE_PORT', '5432'),
         }
     }
-
-
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
